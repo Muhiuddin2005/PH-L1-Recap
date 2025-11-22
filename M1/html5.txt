@@ -1,0 +1,369 @@
+| Feature           | HTML (older)                              | HTML5                                                     |
+| ----------------- | ----------------------------------------- | --------------------------------------------------------- |
+| Multimedia        | Needed plugins like Flash for audio/video | `<audio>` and `<video>` tags built-in                     |
+| New semantic tags | Few (`<div>`, `<span>`)                   | `<header>`, `<footer>`, `<article>`, `<section>`, `<nav>` |
+| Forms             | Basic input types                         | New input types: `email`, `date`, `number`, `range`       |
+| Graphics          | Not supported                             | `<canvas>` and `<svg>` supported                          |
+| Mobile support    | Limited                                   | Better support for responsive and mobile-friendly content |
+
+
+#<!-- Play audio directly in browser -->
+<audio controls>
+  <source src="audio/song.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+controls → shows play/pause/volume controls.
+
+<source> → points to audio file.
+
+Fallback text is shown if browser does not support audio.
+
+<!-- Play video directly in browser -->
+<video width="320" height="240" controls>
+  <source src="videos/movie.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+width / height → sets size of video.
+
+controls → shows play/pause/volume.
+
+Can include multiple <source> for different formats.
+
+<!-- Embed YouTube video using iframe -->
+<iframe width="560" height="315"
+  src="https://www.youtube.com/embed/VIDEO_ID"
+  title="YouTube video player" frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen>
+</iframe>
+src → YouTube embed URL (replace VIDEO_ID with actual video ID).
+
+allowfullscreen → allows full-screen mode.
+
+Works like embedding a live video inside your page.
+
+
+#Embed any content using iframe
+<!-- Embed another website or page -->
+<iframe src="https://example.com" width="600" height="400"></iframe>
+
+
+src → URL to embed.
+
+Can be used for maps, forms, external content, etc.
+
+<iframe> stands for inline frame.
+
+It allows you to embed another HTML page or external content inside your current page.
+
+Essentially, it’s like putting a window to another website inside your page.
+
+Key features:
+
+You can embed YouTube videos, Google Maps, forms, or any external web page.
+
+Has its own scroll, width, and height.
+
+#1. <header>
+
+Represents the header of a page or section.
+
+Usually contains logo, navigation, or introductory content.
+
+<header class="bg-blue-200 p-4 text-white">
+  <h1>My Website Header</h1>
+  <p>Welcome to my website!</p>
+</header>
+
+2. <nav>
+
+Represents a navigation section with links.
+
+Usually used for menus or site navigation.
+
+<nav class="bg-gray-100 p-3">
+  <a href="#home" class="mr-4 text-blue-600">Home</a>
+  <a href="#about" class="mr-4 text-blue-600">About</a>
+  <a href="#contact" class="text-blue-600">Contact</a>
+</nav>
+
+3. <main>
+
+Represents the main content of the page.
+
+There should be only one <main> per page.
+
+<main class="p-4">
+  <h2>Main Content</h2>
+  <p>This is the main part of the webpage.</p>
+</main>
+
+4. <footer>
+
+Represents the footer of a page or section.
+
+Usually contains copyright, links, or contact info.
+
+<footer class="bg-gray-200 p-4 text-center">
+  © 2025 My Website. All rights reserved.
+</footer>
+
+5. <section>
+
+Represents a thematic grouping of content.
+
+Can contain headings, paragraphs, images, or articles.
+
+<section class="p-4 bg-gray-50">
+  <h2>About Us</h2>
+  <p>This section describes our company.</p>
+</section>
+
+6. <article>
+
+Represents a self-contained piece of content that could stand alone.
+
+Examples: blog posts, news articles, comments.
+
+<article class="p-4 bg-white shadow mb-4">
+  <h3>Blog Post Title</h3>
+  <p>This is an individual article. It can be shared independently.</p>
+</article>
+
+
+#1. <form>
+
+The container for all input elements.
+
+action → URL to send data to.
+
+method → GET or POST.
+
+<form action="/submit" method="post" class="p-4 bg-gray-100 rounded">
+  <!-- Form elements go here -->
+</form>
+
+2. <label>
+
+Labels the input for accessibility.
+
+for attribute links the label to input id.
+
+<label for="name" class="block mb-1 font-semibold">Name:</label>
+<input type="text" id="name" name="name" class="border p-1 rounded w-full">
+
+3. <fieldset> and <legend>
+
+<fieldset> groups related inputs together.
+
+<legend> provides a title for the group.
+
+<fieldset class="border p-2 mb-4">
+  <legend class="font-bold">Personal Info</legend>
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" class="border p-1 rounded w-full">
+</fieldset>
+
+4. Radio Buttons
+
+Only one option can be selected in a group.
+
+name must be same for grouping.
+
+<p>Gender:</p>
+<label><input type="radio" name="gender" value="male"> Male</label>
+<label class="ml-2"><input type="radio" name="gender" value="female"> Female</label>
+
+5. Checkboxes
+
+Multiple options can be selected.
+
+<p>Hobbies:</p>
+<label><input type="checkbox" name="hobby" value="reading"> Reading</label>
+<label class="ml-2"><input type="checkbox" name="hobby" value="sports"> Sports</label>
+
+6. Textarea
+
+Multi-line text input.
+
+<label for="message">Message:</label>
+<textarea id="message" name="message" rows="4" class="border p-1 rounded w-full"></textarea>
+
+7. Reset Button
+
+Clears all input values in the form.
+
+<input type="reset" value="Clear Form" class="bg-red-400 text-white px-3 py-1 rounded">
+
+8. Submit Button
+
+Submits form data to the server.
+
+<input type="submit" value="Submit Form" class="bg-blue-500 text-white px-3 py-1 rounded">
+
+
+#| Attribute | Purpose                   | Example            |
+| --------- | ------------------------- | ------------------ |
+| `name`    | Key for sending data      | `name="username"`  |
+| `type`    | Defines input kind        | `type="email"`     |
+| `value`   | Default value / data sent | `value="John Doe"` |
+
+
+#<table> → main container
+
+<caption> → table title
+
+<thead> → header rows
+
+<tbody> → main data rows
+
+<tfoot> → footer rows
+
+<tr> → table row
+
+<th> → header cell (bold/centered)
+
+<td> → normal cell
+
+colspan → merge multiple columns
+
+
+
+#| Concept               | Tailwind Class | Explanation                                 |
+| --------------------- | -------------- | ------------------------------------------- |
+| Make container flex   | `flex`         | Turns a div into a flex container           |
+| Flex direction row    | `flex-row`     | Items are aligned horizontally (default)    |
+| Flex direction column | `flex-col`     | Items are aligned vertically                |
+| Wrap items            | `flex-wrap`    | Allows items to go to next line if overflow |
+| No wrap               | `flex-nowrap`  | Default, items stay in one line             |
+
+mx-auto → sets margin-left and margin-right to auto
+
+
+#<nav class="bg-blue-500 p-4 text-white">
+  <a href="index.html" class="mr-4 hover:underline">Home</a>
+  <a href="about.html" class="mr-4 hover:underline">About</a>
+  <a href="contact.html" class="hover:underline">Contact</a>
+</nav>
+
+
+#1. What are Pseudo-Classes?
+
+Pseudo-classes style elements based on their state or position, without adding extra classes or IDs.
+
+Examples: :hover, :focus, :first-child, :nth-child(), :last-child.
+
+:focus
+
+Applies styles when the element is focused (like an input box).
+
+<input type="text" class="border p-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="Focus me"
+
+
+#1. :first-child
+
+Selects the first child element of a parent.
+
+Useful for styling the first item differently without adding a class.
+
+Example (CSS):
+
+ul li:first-child {
+  color: red;
+}
+
+
+The first <li> inside <ul> will be red.
+
+3. :nth-child(n)
+
+Selects elements based on their position (number) among siblings.
+
+n can be a number, formula, or keyword.
+
+Examples (CSS):
+
+ul li:nth-child(2) {
+  color: blue; /* second item */
+}
+
+ul li:nth-child(odd) {
+  background: #eee; /* odd items */
+}
+
+ul li:nth-child(even) {
+  background: #ddd; /* even items */
+}
+
+
+#| Position   | Description                                                                 |
+| ---------- | --------------------------------------------------------------------------- |
+| `static`   | Default. Normal flow of document.                                           |
+| `relative` | Positioned **relative to its normal position**. Can use `top`, `left`, etc. |
+| `absolute` | Positioned **relative to nearest positioned ancestor**.                     |
+| `fixed`    | Positioned **relative to viewport**, stays on screen when scrolling.        |
+| `sticky`   | Scrolls with page but **sticks** when reaching a defined threshold.         |
+
+
+| Position | Tailwind Class | Example Usage                                   |
+| -------- | -------------- | ----------------------------------------------- |
+| Static   | `static`       | Default, usually not needed                     |
+| Relative | `relative`     | `<div class="relative top-2 left-2">...</div>`  |
+| Absolute | `absolute`     | `<div class="absolute top-4 right-4">...</div>` |
+| Fixed    | `fixed`        | `<div class="fixed bottom-4 right-4">...</div>` |
+| Sticky   | `sticky`       | `<div class="sticky top-0">...</div>`           |
+
+<div class="relative bg-gray-200 p-4 h-32">
+  Parent Box (relative)
+  <div class="absolute top-2 right-2 bg-blue-500 text-white p-2">
+    Child Box (absolute)
+  </div>
+</div>
+
+<div class="fixed bottom-4 right-4 bg-red-500 text-white p-2">
+  Fixed Box (stays on screen)
+</div>
+
+<div class="h-64 overflow-auto border p-2">
+  <div class="sticky top-0 bg-yellow-300 p-2">Sticky Header</div>
+  <p>Content line 1</p>
+  <p>Content line 2</p>
+  <p>Content line 3</p>
+  <p>Content line 4</p>
+</div>
+
+
+z-index controls which element appears on top when elements overlap.
+
+Tailwind classes: z-0, z-10, z-20, z-30, z-40, z-50.
+<div class="relative z-0 bg-gray-200 p-4">
+  Background Box
+  <div class="absolute top-4 left-4 z-10 bg-blue-500 text-white p-2">
+    Top Box (z-10)
+  </div>
+</div>
+
+1. What are Pseudo-Elements?
+
+
+
+
+#Pseudo-elements are special selectors in CSS that let you create and style content without adding extra HTML elements.
+
+They are written as ::before or ::after.
+
+They don’t exist in the DOM; they are generated by CSS
+
+<div class="relative p-4 bg-gray-100 
+            before:content-['★'] 
+            before:absolute 
+            before:top-0 
+            before:right-0 
+            before:text-yellow-500 
+            after:content-['✔'] 
+            after:absolute 
+            after:bottom-0 
+            after:left-0 
+            after:text-green-500">
+  Box with pseudo-elements
+</div>

@@ -1,0 +1,102 @@
+// ==========================
+// 16_2 String Comparison, lowercase, uppercase, trim
+// ==========================
+let str1 = "  Hello  ";
+let str2 = "hello";
+
+// trim() removes spaces from start and end
+console.log(str1.trim()); // "Hello"
+
+// toLowerCase() and toUpperCase()
+console.log(str1.trim().toLowerCase() === str2.toLowerCase()); // true
+console.log(str1.trim().toUpperCase()); // "HELLO"
+
+// ==========================
+// 16_3 String Slice, Join, Concat, Includes
+// ==========================
+let sentence = "JavaScript is fun";
+
+// slice(start, end) -> extracts part of string
+console.log(sentence.slice(0, 10)); // "JavaScript"
+
+// concat() -> joins strings
+let str3 = " Let's code!";
+console.log(sentence.concat(str3)); // "JavaScript is fun Let's code!"
+
+// includes() -> check if substring exists
+console.log(sentence.includes("Script")); // true
+
+// join() -> for arrays, joins elements into string
+let words = ["JS", "is", "awesome"];
+console.log(words.join(" ")); // "JS is awesome"
+
+// ==========================
+// 16_4 Reverse a String in Three different ways
+// ==========================
+let str = "Hello";
+
+// Method 1: split, reverse, join
+console.log(str.split("").reverse().join("")); // "olleH"
+
+// Method 2: using for loop
+let reversed = "";
+for(let i = str.length - 1; i >= 0; i--){
+    reversed += str[i];
+}
+console.log(reversed); // "olleH"
+
+// Method 3: using recursion
+function reverseRec(s){
+    if(s === "") return "";
+    return reverseRec(s.substr(1)) + s[0];
+}
+console.log(reverseRec(str)); // "olleH"
+
+// ==========================
+// 16_8 Keys, Values, Nested Objects, Delete
+// ==========================
+let person = {
+    name: "Muhiuddin",
+    age: 20,
+    address: { city: "Rajshahi", country: "Bangladesh" }
+};
+
+// Object.keys() -> array of keys
+console.log(Object.keys(person)); // ["name","age","address"]
+
+// Object.values() -> array of values
+console.log(Object.values(person)); // ["Muhiuddin", 20, {...}]
+
+// Access nested object
+console.log(person.address.city); // "Rajshahi"
+
+// delete property
+delete person.age;
+console.log(person); // { name: "Muhiuddin", address: { city: "Rajshahi", country: "Bangladesh" } }
+
+// ==========================
+// 16_7 Multiple ways to get & set object properties
+// ==========================
+console.log(person.name);       // Dot notation -> "Muhiuddin"
+console.log(person["name"]);    // Bracket notation -> "Muhiuddin"
+
+// Set property
+person.gender = "Male";         // Dot notation
+person["hobby"] = "Coding";    // Bracket notation
+console.log(person);
+
+// ==========================
+// 16_9 Loop an object & Ways to declare an object
+// ==========================
+// Way 1: Object literal (already used)
+let car = { brand: "Toyota", model: "Corolla" };
+
+// Way 2: Using constructor
+let bike = new Object();
+bike.brand = "Yamaha";
+bike.model = "R15";
+
+// Loop over object properties
+for(let key in car){
+    console.log(key, ":", car[key]);
+}

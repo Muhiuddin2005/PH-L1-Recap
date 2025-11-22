@@ -1,0 +1,127 @@
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div id="container" class="p-4 border mt-4">
+
+  <!-- These are “students” inside the class -->
+  <button class="child-btn px-3 py-2 bg-yellow-300 rounded mr-2">
+    Child 1
+  </button>
+
+  <button class="child-btn px-3 py-2 bg-yellow-300 rounded mr-2">
+    Child 2
+  </button>
+
+</div>
+
+<script>
+  const container = document.getElementById("container");
+
+  // TEACHER LISTENING TO THE WHOLE CLASS (Event Delegation)
+  container.addEventListener("click", function(event){
+
+      // event.target = who actually raised hand (clicked)
+      if(event.target.classList.contains("child-btn")){
+          alert("You clicked: " + event.target.innerText);
+      }
+  });
+
+  // THIS SHOWS EVENT BUBBLING
+  container.addEventListener("click", function(){
+      console.log("The container also heard the click");
+  });
+</script>
+
+
+
+
+🧠 Why is Event Delegation useful?
+🔥 Real Life Example:
+
+Imagine a classroom with:
+
+100 students today
+
+120 students tomorrow
+
+150 students next week
+
+Do you add 100 separate listeners?
+❌ Waste of time
+❌ Slow performance
+❌ Hard to manage
+
+Instead:
+
+✔️ Add ONE listener to the classroom (container)
+✔️ Detect which student raised a hand
+✔️ Handle unlimited students even if they are added later
+
+This is event delegation.
+
+
+
+
+Event Delegation = A technique
+
+You put one listener on a parent
+
+And use bubbling to detect which child was clicked
+
+Delegation depends on bubbling to work.
+
+
+
+element.classList.contains("className")   //true/false
+
+
+
+
+
+#Parent Div: clicking anywhere turns background red
+Button inside Div: clicking button should do something else
+
+BUT…
+Without stopPropagation:
+
+You click button → button handler runs
+
+AND parent div handler ALSO runs
+
+🙄 Which causes unwanted actions.
+
+stopPropagation() prevents that.
+
+
+
+
+#<div id="parent" class="p-8 bg-red-300">
+    <button id="child" class="px-4 py-2 bg-blue-500 text-white rounded">
+        Click Child Button
+    </button>
+</div>
+
+<script>
+document.getElementById("parent").addEventListener("click", () => {
+    alert("PARENT clicked!");
+});
+
+document.getElementById("child").addEventListener("click", (e) => {
+    alert("CHILD clicked!");
+
+    e.stopPropagation();   // STOP the bubbling here
+});
+</script>
+
+
+
+🧩 What happens when you click the child button?
+✔️ If NO stopPropagation():
+
+"CHILD clicked!"
+
+"PARENT clicked!" (because event bubbled up)
+
+✔️ WITH stopPropagation():
+
+Only "CHILD clicked!"
+❌ Parent handler doesn’t run.

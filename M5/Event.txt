@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Events with Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-10 space-y-6">
+
+    <!-- 25-2 & 25-3: Buttons with click handlers -->
+    <button id="btnDirect" class="px-4 py-2 bg-blue-500 text-white rounded">Direct onclick</button>
+    <button id="btnAddListener" class="px-4 py-2 bg-green-500 text-white rounded">addEventListener</button>
+    <p id="eventText" class="text-lg font-semibold text-gray-700">Event output here</p>
+
+    <!-- 25-5: Comment Box -->
+    <div class="space-y-2">
+        <input id="commentInput" class="border p-2 rounded w-full" type="text" placeholder="Enter comment">
+        <button id="commentBtn" class="px-4 py-2 bg-purple-500 text-white rounded">Add Comment</button>
+        <ul id="commentList" class="list-disc pl-5 text-gray-700"></ul>
+    </div>
+
+    <!-- 27-7: Active Buttons -->
+    <div class="flex gap-2">
+        <button class="px-4 py-2 bg-gray-300 rounded active-btn">Option 1</button>
+        <button class="px-4 py-2 bg-gray-300 rounded active-btn">Option 2</button>
+        <button class="px-4 py-2 bg-gray-300 rounded active-btn">Option 3</button>
+    </div>
+
+    <!-- 28_5-2: Input for isNaN check -->
+    <div class="space-y-2">
+        <input id="numInput" type="text" placeholder="Enter a number" class="border p-2 rounded w-full">
+        <button id="checkNumBtn" class="px-4 py-2 bg-red-500 text-white rounded">Check Number</button>
+        <p id="numResult" class="text-gray-700 font-medium"></p>
+    </div>
+
+    <script>
+        // ============================
+        // 25-2: Direct onclick handler
+        // ============================
+        const eventText = document.getElementById("eventText");
+        document.getElementById("btnDirect").onclick = function() {
+            eventText.innerText = "Button clicked via direct onclick!";
+        };
+
+        // ============================
+        // 25-3: addEventListener
+        // ============================
+        document.getElementById("btnAddListener").addEventListener("click", () => {
+            eventText.innerText = "Button clicked via addEventListener!";
+        });
+
+        // ============================
+        // 25-5: Comment Box
+        // ============================
+        const commentBtn = document.getElementById("commentBtn");
+        const commentInput = document.getElementById("commentInput");
+        const commentList = document.getElementById("commentList");
+
+        commentBtn.addEventListener("click", () => {
+            const comment = commentInput.value.trim();
+            if(comment){
+                const li = document.createElement("li");
+                li.innerText = comment;
+                li.className = "text-gray-800"; // Tailwind class
+                commentList.appendChild(li);
+                commentInput.value = ""; // Clear input
+            }
+        });
+
+        // ============================
+        // 27-4 & 27-5: Reusable function to get/set values
+        // ============================
+        function getValue(id){ return document.getElementById(id).value; }
+        function setText(id, text){ document.getElementById(id).innerText = text; }
+
+        // Example usage: updating eventText dynamically
+        setText("eventText", "Reusable function updated this text!");
+
+        // ============================
+        // 27-7: Active Buttons
+        // ============================
+        const activeButtons = document.querySelectorAll(".active-btn");
+        activeButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                activeButtons.forEach(b => b.classList.remove("bg-blue-500", "text-white"));
+                btn.classList.add("bg-blue-500", "text-white");
+            });
+        });
+
+        // ============================
+        // 28_5-2: isNaN check (advanced)
+        // ============================
+        document.getElementById("checkNumBtn").addEventListener("click", () => {
+            const num = getValue("numInput");
+            if(isNaN(num) || num.trim() === ""){
+                setText("numResult", "Please enter a valid number!");
+            } else {
+                setText("numResult", `You entered a valid number: ${num}`);
+            }
+        });

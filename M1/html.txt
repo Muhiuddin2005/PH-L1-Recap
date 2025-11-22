@@ -1,0 +1,36 @@
+# strong,em (Semantic)
+#<img src="photo.jpg">              <!-- same folder -->
+<img src="images/photo.jpg">      <!-- inside a subfolder -->
+<img src="../photo.jpg">          <!-- go back to parent folder -->
+<img src="../images/photo.jpg">   <!-- parent folder → subfolder -->
+<img src="../../photo.jpg">       <!-- go back two folders -->
+<img src="./photo.jpg">           <!-- current folder (optional) -->
+#<!-- Text input -->
+<input type="text" placeholder="Enter your name">      <!-- user types text -->
+
+<!-- Email -->
+<input type="email" placeholder="Enter email">          <!-- checks valid email -->
+
+<!-- Number -->
+<input type="number" min="1" max="10">                  <!-- only numbers -->
+
+<!-- Password -->
+<input type="password" placeholder="Password">          <!-- hidden text -->
+
+<!-- Date input -->
+<input type="date">                                     <!-- choose a date -->
+
+<!-- Checkbox -->
+<input type="checkbox"> I agree                         <!-- tick/untick -->
+
+<!-- Radio -->
+<input type="radio" name="gender" checked> Male         <!-- default selected -->
+<input type="radio" name="gender"> Female
+
+<!-- Select dropdown -->
+<select>
+  <option selected>Select country</option>              <!-- default showing -->
+  <option>Bangladesh</option>
+  <option>India</option>
+  <option>Nepal</option>
+</select>

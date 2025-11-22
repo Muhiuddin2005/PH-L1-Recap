@@ -1,0 +1,15 @@
+let fruits = ["banana", "mango"];
+
+// Add elements
+fruits.push("orange");      // ["banana", "mango", "orange"]
+fruits.unshift("apple");    // ["apple", "banana", "mango", "orange"]
+
+// Remove elements
+fruits.pop();               // ["apple", "banana", "mango"]
+fruits.shift();             // ["banana", "mango"]
+
+// Other checks
+console.log(Array.isArray(fruits)); // true
+console.log(fruits.length);         // 2
+console.log(fruits.indexOf("mango"));// 1
+console.log(fruits.includes("apple"));// false

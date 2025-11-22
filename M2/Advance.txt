@@ -1,0 +1,63 @@
+<div class="flex justify-around items-end h-64 mt-10">
+  <!-- Ball 1 -->
+  <div class="w-12 h-12 bg-red-500 rounded-full animate-bounce"></div>
+
+  <!-- Ball 2 -->
+  <div class="w-12 h-12 bg-green-500 rounded-full animate-bounce animation-delay-200"></div>
+
+  <!-- Ball 3 -->
+  <div class="w-12 h-12 bg-blue-500 rounded-full animate-bounce animation-delay-400"></div>
+</div>
+
+
+
+
+Parent Container
+<div class="flex justify-around items-end h-64 mt-10">
+
+
+flex → Turns the container into a flexbox, allowing easy horizontal or vertical alignment of children.
+
+justify-around → Horizontally distributes space evenly around each child element, leaving space on both ends.
+
+items-end → Vertically aligns children to the bottom of the container.
+
+h-64 → Sets the container height to 16rem (64 × 0.25rem).
+
+mt-10 → Adds top margin of 2.5rem (10 × 0.25rem), pushing the container downward.
+
+This container sets up the flex layout where the balls will sit at the bottom and bounce.
+
+Ball 1
+<div class="w-12 h-12 bg-red-500 rounded-full animate-bounce"></div>
+
+
+w-12 → Width of 3rem (12 × 0.25rem).
+
+h-12 → Height of 3rem (makes it a square to start).
+
+bg-red-500 → Background color, a medium shade of red from Tailwind’s palette.
+
+rounded-full → Makes the square a perfect circle.
+
+animate-bounce → Built-in Tailwind bounce animation, moves element up and down continuously.
+
+Ball 2
+<div class="w-12 h-12 bg-green-500 rounded-full animate-bounce animation-delay-200"></div>
+
+
+All classes same as Ball 1, except:
+
+animation-delay-200 → Adds 0.2s delay before starting the bounce animation.
+
+This creates a staggered effect, so the balls don’t bounce in sync.
+
+Note: Tailwind default doesn’t include animation-delay-* classes. You might need to add it in Tailwind config or use inline style:
+
+style="animation-delay: 0.2s;"
+
+Ball 3
+<div class="w-12 h-12 bg-blue-500 rounded-full animate-bounce animation-delay-400"></div>
+
+
+Same as Ball 2, but the delay is 0.4s, making it bounce slightly after the first two balls.

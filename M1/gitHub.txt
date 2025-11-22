@@ -1,0 +1,52 @@
+#What is a Git Branch?
+
+A branch is like a separate timeline or workspace in your project.
+
+The main branch (main or master) is the “stable” version of your project.
+
+When you create a branch, you get a copy of the code where you can work independently without affecting the main branch.
+
+# 1. List all branches
+git branch
+# Shows local branches. Current branch has a *
+
+# 2. Create a new branch
+git branch new-feature
+# Creates a branch called "new-feature" but stays on current branch
+
+# 3. Switch to a branch
+git checkout new-feature
+# Or use modern command:
+git switch new-feature
+
+# 4. Create and switch in one command
+git checkout -b new-feature
+git switch -c new-feature
+
+# 5. Delete a branch
+git branch -d new-feature   # safe delete (only if merged)
+git branch -D new-feature   # force delete
+
+# 6. Push branch to remote
+git push origin new-feature
+
+# 7. Pull updates from remote branch
+git pull origin new-feature
+
+# 8. Merge branch into current branch
+git checkout main
+git merge new-feature
+
+
+# Add a new remote account
+
+If you want to push to another GitHub account, you can add a new remote or edit the existing one.
+
+Add new remote:
+
+git remote add neworigin https://github.com/newuser/repo.git
+
+
+Push to new remote:
+
+git push neworigin main

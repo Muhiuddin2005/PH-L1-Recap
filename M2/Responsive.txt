@@ -1,0 +1,31 @@
+| Unit  | Relative to                         | Example                                     |
+| ----- | ----------------------------------- | ------------------------------------------- |
+| `em`  | parent element’s font-size          | `font-size: 2em;` → 2 × parent font-size    |
+| `rem` | root element’s font-size (`<html>`) | `font-size: 1.5rem;` → 1.5 × root font-size |
+| Unit   | Relative to                      | Example                                 |
+| ------ | -------------------------------- | --------------------------------------- |
+| `vw`   | 1% of viewport width             | `width: 50vw;` → half of screen width   |
+| `vh`   | 1% of viewport height            | `height: 50vh;` → half of screen height |
+| `vmin` | 1% of smaller viewport dimension | `width: 50vmin;`                        |
+| `vmax` | 1% of larger viewport dimension  | `width: 50vmax;`                        |
+| Unit | Relative to    | Example                                       |
+| ---- | -------------- | --------------------------------------------- |
+| `%`  | parent element | `width: 50%;` → 50% of parent width           |
+| `%`  | font-size      | `font-size: 120%;` → 120% of parent font-size |
+
+
+
+#Default styles (no prefix) → apply to all devices, mainly targeting mobile first.
+<div class="bg-red-500 sm:bg-green-500 md:bg-blue-500 lg:bg-purple-500 p-4 text-white">
+  Responsive Box
+</div>
+Red → default, shown on all devices (mobile first).
+
+Green → applies on sm (≥640px, small devices).
+
+Blue → applies on md (≥768px, medium devices, tablets).
+
+Purple → applies on lg (≥1024px, large devices, laptops/desktops).
+
+
+#text-overflow: ellipsis;   /* show ... for hidden text */

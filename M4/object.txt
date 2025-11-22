@@ -1,0 +1,44 @@
+let numbers = [5, 2, 9, 1, 7];
+
+// Sort in ascending order
+numbers.sort((a, b) => a - b);
+console.log("Ascending:", numbers); // [1, 2, 5, 7, 9]
+
+// Sort in descending order
+numbers.sort((a, b) => b - a);
+console.log("Descending:", numbers); // [9, 7, 5, 2, 1]
+
+
+let original = [1, 2, 3, 4, 5];
+let copy = original.slice(); // creates a shallow copy
+console.log("Copy:", copy); // [1, 2, 3, 4, 5]
+
+
+| Feature          | Shallow Copy                      | Deep Copy                                                                            |
+| ---------------- | --------------------------------- | ------------------------------------------------------------------------------------ |
+| Copies           | Only top-level properties         | All levels, nested objects included                                                  |
+| Shared Reference | Nested objects are shared         | No shared reference                                                                  |
+| Example Methods  | `slice()`, `[...arr]`, `{...obj}` | `JSON.parse(JSON.stringify(obj))`, structured cloning (structuredClone in modern JS) |
+| Modifying nested | Affects original                  | Does NOT affect original                                                             |
+
+
+
+let original = [1, 2, [3, 4]]; // outer array contains another array
+
+let copy = [...original]; // shallow copy
+
+copy[0] = 100;     // changes outer element
+console.log(original[0]); // 1 -> original unaffected
+
+copy[2][0] = 300;  // changes inner array
+console.log(original[2][0]); // 300 -> original affected because inner array is shared
+
+
+
+
+let original = [1, 2, [3, 4]];
+
+let copy = JSON.parse(JSON.stringify(original)); // deep copy
+
+copy[2][0] = 300;  
+console.log(original[2][0]); // 3 -> original unaffected

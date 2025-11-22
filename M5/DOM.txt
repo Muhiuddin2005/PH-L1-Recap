@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Example</title>
+    <style>
+        .highlight { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1 id="main-title">Hello DOM</h1>
+    <p class="text">This is a paragraph.</p>
+    <p class="text">Another paragraph.</p>
+    <div id="container"></div>
+
+    <script>
+        // ==============================
+        // 24-2 getElementsByTagName
+        // ==============================
+        let paragraphs = document.getElementsByTagName("p"); // HTMLCollection of <p>
+        console.log(paragraphs); // all <p> elements
+
+        for (let p of paragraphs) {
+            console.log(p.innerText); // text of each <p>
+        }
+
+        // ==============================
+        // 24-3 getElementsByClassName vs getElementById
+        // ==============================
+        let texts = document.getElementsByClassName("text"); // HTMLCollection
+        console.log(texts.length); // 2
+
+        let title = document.getElementById("main-title"); // single element
+        console.log(title.innerText); // "Hello DOM"
+
+        // ==============================
+        // 24-4 querySelector and querySelectorAll
+        // ==============================
+        let firstParagraph = document.querySelector(".text"); // first match only
+        console.log(firstParagraph.innerText);
+
+        let allParagraphs = document.querySelectorAll(".text"); // NodeList
+        allParagraphs.forEach(p => console.log(p.innerText));
+
+        // ==============================
+        // 24-5 Dynamic style, getAttribute, setAttribute, innerText, innerHTML
+        // ==============================
+        title.style.color = "blue";               // change color dynamically
+        title.style.fontSize = "30px";            // change font size
+        console.log(title.getAttribute("id"));    // "main-title"
+        title.setAttribute("data-name", "header"); // add custom attribute
+        title.innerText = "Updated DOM Title";    // change visible text
+        title.innerHTML += " <span>(Updated)</span>"; // can add HTML
+
+        // ==============================
+        // 24-6 Add and Remove CSS Class
+        // ==============================
+        firstParagraph.classList.add("highlight");    // add class
+        firstParagraph.classList.remove("highlight"); // remove class
+        firstParagraph.classList.toggle("highlight"); // toggle class
+
+        // ==============================
+        // 24-7 NodeList, HTMLCollection, parentNode, childNodes, createElement
+        // ==============================
+        console.log(allParagraphs);       // NodeList
+        console.log(paragraphs);          // HTMLCollection
+        console.log(firstParagraph.parentNode); // <body> element
+        console.log(firstParagraph.childNodes); // child nodes including text
+
+        let newDiv = document.createElement("div"); // create <div> element
+        newDiv.innerText = "I am a new div!";
+
+        // ==============================
+        // 24-8 Append element dynamically
+        // ==============================
+        let container = document.getElementById("container");
+        container.appendChild(newDiv); // add newDiv to container
+
+        // Another example: create and append <p>
+        let newPara = document.createElement("p");
+        newPara.innerText = "Dynamically added paragraph!";
+        container.appendChild(newPara);
+
+    </script>
+</body>
+</html>
+
+
+
+
+element.setAttribute(attributeName, value)
+
+
+
+forEach Purpose: Loops over arrays or NodeLists and runs a function for each item.
+
+

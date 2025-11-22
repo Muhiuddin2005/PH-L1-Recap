@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind Toggle Example</title>
+    <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CDN -->
+</head>
+<body class="p-10">
+
+    <p id="myPara" class="text-gray-800 text-lg">Hello!</p>
+    <button id="toggleBtn" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+        Toggle Highlight
+    </button>
+
+    <script>
+        const para = document.getElementById("myPara");
+        const btn = document.getElementById("toggleBtn");
+
+        // Add Tailwind class dynamically
+        para.classList.add("font-bold"); // Make text bold initially
+
+        // Toggle Tailwind class on button click
+        btn.addEventListener("click", () => {
+            para.classList.toggle("text-red-500"); // Highlight text in red
+            para.classList.toggle("underline");    // Underline text
+        });
+    </script>
+
+</body>
+</html>

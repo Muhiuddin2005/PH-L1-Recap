@@ -1,0 +1,17 @@
+<div class="w-24 h-24 bg-red-500 rotate-45"></div>
+Creates a 100px × 100px red box rotated 45° clockwise.
+<div class="w-24 h-24 bg-green-500 hover:scale-150 transition-transform duration-500">
+  Hover me
+</div>
+When hovered, the box grows to 1.5× smoothly in 0.5s.
+<div class="w-24 h-24 bg-purple-500 hover:translate-x-8 hover:-translate-y-4 transition-transform duration-500">
+  Hover me
+</div>
+Moves right 128px and up 64px on hover smoothly.
+In CSS (and Tailwind), a transition makes changes smooth instead of instant.
+
+transform refers to properties like rotate, scale, translate, skew.
+
+transition-transform tells the browser:
+
+“Whenever a transform property changes, animate it smoothly over time.”

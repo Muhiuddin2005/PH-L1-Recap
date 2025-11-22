@@ -1,0 +1,84 @@
+const a = [1, 2, 3];
+const b = a;   // b and a point to same box
+
+
+const a = [1, 2, 3];
+const b = [...a];
+Now modifying b will NOT affect a.
+
+
+
+const numbers = [5, 10, 20, 1];
+console.log(Math.max(...numbers));  // 20
+Math.max() doesn’t accept an array directly—
+so we spread the array into individual values.
+
+
+const colors = ["red", "green", "blue"];
+const [first, second] = colors;
+
+console.log(first); // red
+console.log(second); // green
+
+
+
+
+const person = {
+    name: "John",
+    age: 21,
+    country: "Bangladesh"
+};
+
+const { name, age } = person;
+
+console.log(name);  // John
+console.log(age);   // 21
+
+
+
+
+const user = { name: "Alex", age: 20 };
+
+console.log(Object.keys(user));
+// ["name", "age"]
+console.log(Object.values(user));
+// ["Alex", 20]
+console.log(Object.entries(user));
+
+// [
+//   ["name", "Alex"],
+//   ["age", 20]
+// ]
+Object.seal(user);
+user.name = "George";   // OK
+user.city = "Dhaka";    // ❌ Not allowed
+delete user.name;       // ❌ Not allowed
+Object.freeze(user);
+user.name = "Changed"; // ❌ No effect
+
+
+
+#| Loop       | Works on                    | What it returns    |
+| ---------- | --------------------------- | ------------------ |
+| **for…in** | Objects & Arrays            | **Keys / Indexes** |
+| **for…of** | Arrays, strings, Maps, Sets | **Values**         |
+
+
+const person = {
+  name: "Rahim",
+  age: 20,
+  city: "Dhaka"
+};
+
+
+for (let key in person) {
+  console.log(key);           // name, age, city
+  console.log(person[key]);   // Rahim, 20, Dhaka
+}
+
+for (let item of person) { } 
+// ❌ Error: person is not iterable
+
+for (let key of Object.keys(person)) {
+  console.log(key); // name, age, city
+}

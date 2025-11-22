@@ -1,0 +1,31 @@
+// Create an empty object
+let car = {};
+
+// Ask user for input
+car.brand = prompt("Enter car brand:");   // e.g., Toyota
+car.model = prompt("Enter car model:");   // e.g., Corolla
+car.year = prompt("Enter car year:");     // e.g., 2025
+
+// Display object properties using for...in
+for (let key in car) {
+    console.log(key + " : " + car[key]);
+}
+
+
+
+for...in
+
+Purpose: Loops over keys (property names) of an object or indices of an array.
+
+Works for objects and arrays (but gives indices for arrays, not values).
+
+Returns keys/indexes, not the actual value.
+
+
+for...of
+
+Purpose: Loops over values of iterable objects like arrays, strings, sets, maps.
+
+Returns actual values, not keys/indexes.
+
+Cannot be used directly on plain objects.

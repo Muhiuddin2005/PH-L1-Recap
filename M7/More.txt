@@ -1,0 +1,137 @@
+const name = "Muhiuddin";
+const age = 20;
+
+const user = {
+  name: name,
+  age: age
+};
+
+
+If the key and value variable have the same name, you can write:
+
+const name = "Muhiuddin";
+const age = 20;
+
+const user = { name, age };
+
+
+
+
+
+#Here is a **very basic, beginner-friendly** example of how to:
+
+✔️ Create a **normal JavaScript file** inside a React project
+✔️ Write **multiple arithmetic functions**
+✔️ **Export them using the `as` keyword**
+✔️ **Import and use them in a JSX file**
+
+---
+
+# 📌 **Step 1: Create a JS Utility File**
+
+Create a file:
+**src/utils/mathFunctions.js**
+
+### 👉 `mathFunctions.js`
+
+```js
+// Basic arithmetic functions
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+
+function divide(a, b) {
+  return a / b;
+}
+
+// Export using "as" keyword
+export {
+  add as addNumbers,
+  subtract as subtractNumbers,
+  multiply as multiplyNumbers,
+  divide as divideNumbers
+};
+```
+
+✔️ Notice we renamed each function during export using **as**.
+
+---
+
+# 📌 **Step 2: Import and Use in a React Component**
+
+Example:
+**src/App.jsx**
+
+### 👉 `App.jsx`
+
+```jsx
+import React from "react";
+
+// Import using the renamed names
+import {
+  addNumbers,
+  subtractNumbers,
+  multiplyNumbers,
+  divideNumbers
+} from "./utils/mathFunctions";
+
+export default function App() {
+  const a = 10;
+  const b = 5;
+
+  return (
+    <div>
+      <h1>Arithmetic Demo</h1>
+
+      <p>Add: {addNumbers(a, b)}</p>
+      <p>Subtract: {subtractNumbers(a, b)}</p>
+      <p>Multiply: {multiplyNumbers(a, b)}</p>
+      <p>Divide: {divideNumbers(a, b)}</p>
+    </div>
+  );
+}
+```
+
+---
+
+| Feature / Point                    | **Default Export**                | **Named Export**                          |
+| ---------------------------------- | --------------------------------- | ----------------------------------------- |
+| **How many per file?**             | Only **1** allowed                | **Unlimited** (you can export many items) |
+| **Export syntax**                  | `export default funcName;`        | `export { funcName1, funcName2 };`        |
+| **Import syntax**                  | `import Something from "./file";` | `import { funcName1 } from "./file";`     |
+| **Can rename while importing?**    | Yes, freely                       | Yes, but must use `as`                    |
+| **Best for**                       | Components, classes, configs      | Utility functions, helpers, constants     |
+| **Clarity**                        | Less clear (name can be anything) | Very clear (must match exported name)     |
+| **Autocompletion reliability**     | Medium (name can change anywhere) | Strong (editor suggests all exports)      |
+| **Can you export multiple items?** | ❌ No                              | ✅ Yes                                     |
+| **Recommended for utility files?** | ❌ Not recommended                 | ✅ Perfect choice                          |
+| **Example use case**               | `export default App;`             | `export { add, subtract, multiply }`      |
+
+
+
+
+#export default function App() {
+  const users = [
+    { name: "Muhiuddin", age: 20 },
+    { name: "Rahim", age: 22 },
+    { name: "Karim", age: 19 }
+  ];
+
+  return (
+    <div>
+      {users.map((user, index) => (
+        <p key={index}>
+          {index}. {user.name} — {user.age} years old
+        </p>
+      ))}
+    </div>
+  );
+}
