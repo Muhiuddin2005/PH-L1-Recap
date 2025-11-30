@@ -1,0 +1,43 @@
+* **Go into a folder:**
+
+  ```bash
+  cd folderName
+  ```
+
+* **Example:**
+
+  ```bash
+  cd src
+  ```
+
+* **Go back one folder:**
+
+  ```bash
+  cd ..
+  ```
+
+* **Go back multiple levels:**
+
+  ```bash
+  cd ../../
+  ```
+
+* **Go to a specific absolute path:**
+
+  ```bash
+  cd C:\Users\YourName\Documents\Projects
+  ```
+
+* **Go to a directory with spaces in its name:**
+
+  ```bash
+  cd "My Folder"
+  ```
+
+* **List files in current folder (Windows):**
+
+  ```bash
+  dir
+  ```
+
+

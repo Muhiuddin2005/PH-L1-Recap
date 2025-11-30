@@ -1,0 +1,13 @@
+| Feature                     | **Lucide Icons**                                  | **React Icons**                                   |
+| --------------------------- | ------------------------------------------------- | ------------------------------------------------- |
+| **Design Style**            | Minimal, clean line (stroke) icons                | Mixed styles (outline, filled, solid, rounded)    |
+| **Consistency**             | Very consistent (single icon style)               | Less consistent (many styles from many packs)     |
+| **Icon Count**              | ~1,300+ icons                                     | 100,000+ icons (from many families)               |
+| **Performance**             | Very lightweight & fast                           | Heavier due to multiple libraries                 |
+| **Tree Shaking**            | Excellent (imports only used icons)               | Good, but package size is larger                  |
+| **Modern UI Compatibility** | Excellent (best for Tailwind/shadcn)              | Good, but designs vary                            |
+| **Installation Size**       | Very small                                        | Larger                                            |
+| **Custom Styling**          | Easy (stroke, size, className)                    | Depends on icon family                            |
+| **Community & Updates**     | Active, modern                                    | Stable but not fast-growing                       |
+| **Best For**                | Modern UIs, Tailwind, dashboards, SaaS, shadcn/ui | Projects needing many icon styles or huge variety |
+| **Downside**                | Only stroke-style icons                           | Inconsistent design, heavier bundle               |

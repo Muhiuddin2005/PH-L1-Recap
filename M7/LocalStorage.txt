@@ -1,0 +1,428 @@
+| Feature / Point    | **Local Storage**                                     | **Session Storage**                                                 |
+| ------------------ | ----------------------------------------------------- | ------------------------------------------------------------------- |
+| **Lifetime**       | Permanent until manually deleted                      | Clears automatically when browser tab closes                        |
+| **Storage Size**   | ~5–10 MB                                              | ~5 MB (usually same as localStorage but can be slightly smaller)    |
+| **Persistence**    | Survives page refresh, tab close, and browser restart | Only survives page refresh; lost after tab/window closes            |
+| **Scope**          | Shared across all tabs/windows of same origin         | Restricted to that specific tab/window only                         |
+| **Use Case**       | Long-term data: tokens, theme, user preferences       | Temporary data: step forms, checkout processes, session-based state |
+| **API Access**     | `localStorage.getItem()` / `setItem()`                | `sessionStorage.getItem()` / `setItem()`                            |
+| **Data Type**      | Stores only strings                                   | Stores only strings                                                 |
+| **Security**       | Same (not secure for sensitive data)                  | Same (not secure for sensitive data)                                |
+| **Auto Expiry**    | ❌ Never                                               | ✅ Yes, ends with session                                            |
+| **Max Durability** | High (manually clear only)                            | Low (destroyed fast)                                                |
+
+
+
+
+
+
+
+
+#1️⃣ Utility file: localstorage.js
+/**
+ * Local Storage Utilities for Cart
+ * 
+ * Think of localStorage as a small cupboard in your browser.
+ * You can store small data like your shopping cart here permanently.
+ */
+
+// Get cart from localStorage
+const getCartFromLocalStorage = () => {
+    // Get the stored cart string from localStorage
+    const storedCartString = localStorage.getItem('cart');
+
+    if (storedCartString) {
+        // Convert string back to JavaScript array
+        const storedCart = JSON.parse(storedCartString);
+        return storedCart; // Return array of IDs
+    }
+
+    // If nothing is stored yet, return empty array
+    return [];
+}
+
+// Save cart array to localStorage
+const saveCartToLocalStorage = (cart) => {
+    // Convert array to string because localStorage stores only strings
+    const cartStringified = JSON.stringify(cart);
+    localStorage.setItem('cart', cartStringified);
+}
+
+// Add a new item ID to the cart in localStorage
+const addItemToCartLocalStorage = (id) => {
+    const cart = getCartFromLocalStorage(); // Get existing cart
+    const newCart = [...cart, id];          // Add new ID
+    saveCartToLocalStorage(newCart);        // Save updated cart
+}
+
+// Remove an item ID from the cart in localStorage
+const removeFromLocalStorage = (id) => {
+    const storedCart = getCartFromLocalStorage();
+    // Remove the ID using filter
+    const remainingCart = storedCart.filter(storedId => storedId !== id);
+    saveCartToLocalStorage(remainingCart);
+}
+
+// Export the functions with custom names using `as`
+export {
+    getCartFromLocalStorage as getStoreCart,
+    addItemToCartLocalStorage as addToStoredCart,
+    removeFromLocalStorage as removeFromCart
+}
+
+
+
+2️⃣ React Component: Bottles.jsx
+import React, { use, useEffect, useState } from 'react';
+import Bottle from '../Bottle/Bottle';
+import './Bottles.css';
+import { addToStoredCart, getStoreCart, removeFromCart } from '../../utilities/localstorage';
+import Cart from '../Cart/Cart';
+
+/**
+ * Bottles Component
+ * 
+ * This component displays a list of bottles and manages a shopping cart.
+ * - Loads bottles from a promise (bottlesPromise)
+ * - Loads cart from localStorage on page load
+ * - Allows adding bottles to cart
+ * - Allows removing bottles from cart
+ * - Persists cart data in localStorage
+ */
+
+const Bottles = ({ bottlesPromise }) => {
+    // -------------------------------
+    // 1️⃣ React State: Cart
+    // -------------------------------
+    // Stores the actual bottle objects that are added to the cart
+    const [cart, setCart] = useState([]);
+
+    // -------------------------------
+    // 2️⃣ Load Bottles Data
+    // -------------------------------
+    // Resolve the promise to get bottles array
+    const bottles = use(bottlesPromise);
+
+    // -------------------------------
+    // 3️⃣ Load Cart from Local Storage on Page Load
+    // -------------------------------
+    useEffect(() => {
+        // Get array of IDs from localStorage (e.g., ["101", "103"])
+        const storedCartIds = getStoreCart();
+
+        // Array to store actual bottle objects for UI
+        const storedCart = [];
+
+        // Match IDs from storage with real bottle objects
+        for (const id of storedCartIds) {
+            const cartBottle = bottles.find(bottle => bottle.id === id);
+            if (cartBottle) {
+                storedCart.push(cartBottle); // Add matched bottle to cart
+            }
+        }
+
+        // Update React state with stored cart
+        setCart(storedCart);
+
+    }, [bottles]); // Runs when bottles data is available
+
+    // -------------------------------
+    // 4️⃣ Handle Add to Cart
+    // -------------------------------
+    const handleAddToCart = (bottle) => {
+        // 1. Update UI state
+        const newCart = [...cart, bottle]; // Add bottle to cart state
+        setCart(newCart);
+
+        // 2. Update localStorage
+        addToStoredCart(bottle.id); // Save bottle ID in browser storage
+    }
+
+    // -------------------------------
+    // 5️⃣ Handle Remove from Cart
+    // -------------------------------
+    const handleRemoveFromCart = (id) => {
+        // 1. Update UI state
+        const remainingCart = cart.filter(bottle => bottle.id !== id); // Remove bottle from state
+        setCart(remainingCart);
+
+        // 2. Update localStorage
+        removeFromCart(id); // Remove bottle ID from browser storage
+    }
+
+    // -------------------------------
+    // 6️⃣ Render
+    // -------------------------------
+    return (
+        <div>
+            {/* Show total bottles and cart count */}
+            <h3>Bottles: {bottles.length}</h3>
+            <p>Added to cart: {cart.length}</p>
+
+            {/* Render the Cart component */}
+            <Cart cart={cart} handleRemoveFromCart={handleRemoveFromCart}></Cart>
+
+            {/* Render all bottles */}
+            <div className='bottles-container'>
+                {bottles.map(bottle => (
+                    <Bottle
+                        key={bottle.id}               // Unique key for React
+                        handleAddToCart={handleAddToCart} // Function to add bottle
+                        bottle={bottle}               // Bottle data
+                    ></Bottle>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default Bottles;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React from 'react';
+import './Bottle.css';
+
+const Bottle = ({ bottle, handleAddToCart }) => {
+    const { img, name, price, stock } = bottle;
+    // console.log(bottle);
+
+    return (
+        <div className='card bottle'>
+            <img src={img} alt="" />
+            <h3>{name}</h3>
+            <p>${price}</p>
+            <p>{stock} remaining</p>
+            <button onClick={() => handleAddToCart(bottle)}>Buy Now</button>
+        </div>
+    );
+};
+
+export default Bottle;
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React from 'react';
+import './Cart.css';
+
+const Cart = ({ cart, handleRemoveFromCart }) => {
+    return (
+        <div className='cart-container'>
+            {
+                cart.map(bottle => <div key={bottle.id}>
+                    <img src={bottle.img} alt="" />
+                    <button onClick={() => handleRemoveFromCart(bottle.id)}>x</button>
+                </div>)
+            }
+        </div>
+    );
+};
+
+export default Cart;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 🏷 **Project Summary: Shopping Cart with Local Storage**
+
+This project is a **simple shopping cart system** in React where users can add bottles to the cart, remove them, and persist the cart in **localStorage**.
+
+---
+
+## **1️⃣ `localstorage.js` (Utility Functions)**
+
+Purpose: **Handle saving, loading, adding, and removing items from browser storage.**
+
+| Function                    | What it does                                              | Real-life analogy                                              |
+| --------------------------- | --------------------------------------------------------- | -------------------------------------------------------------- |
+| `getCartFromLocalStorage`   | Reads the cart from localStorage and converts it to array | Look in the cupboard to see which bottles were saved yesterday |
+| `saveCartToLocalStorage`    | Converts array to string and saves in localStorage        | Put your trolley (array) back into the cupboard                |
+| `addItemToCartLocalStorage` | Adds a new bottle ID to the stored cart                   | Add a bottle to the trolley and note it in the cupboard        |
+| `removeFromLocalStorage`    | Removes a bottle ID from stored cart                      | Remove a bottle from trolley and cupboard                      |
+
+**Key Idea:** Only **IDs** are stored in localStorage. Full bottle objects live in React state.
+
+---
+
+## **2️⃣ `Bottles.jsx` (Main Component)**
+
+Purpose: Display **all bottles**, manage **cart state**, and **sync with localStorage**.
+
+### How it works:
+
+1. **Load bottles** from a promise (`bottlesPromise`) using `use()`.
+2. **Load cart IDs from localStorage** using `getStoreCart()` and match IDs with actual bottle objects.
+3. **State `cart`** stores full bottle objects for UI.
+4. **Add bottle to cart**:
+
+   * Update `cart` state for UI.
+   * Add bottle ID to localStorage (`addToStoredCart`).
+5. **Remove bottle from cart**:
+
+   * Remove from `cart` state.
+   * Remove ID from localStorage (`removeFromCart`).
+6. **Render bottles** using `<Bottle />`.
+7. **Render cart** using `<Cart />`.
+
+**Key Idea:** **UI state and localStorage are always in sync**. Cart persists after page refresh.
+
+---
+
+## **3️⃣ `Cart.jsx` (Cart Display Component)**
+
+Purpose: Show **items currently in the cart** and allow **removing items**.
+
+```jsx
+cart.map(bottle => (
+  <div key={bottle.id}>
+    <img src={bottle.img} alt="" />
+    <button onClick={() => handleRemoveFromCart(bottle.id)}>x</button>
+  </div>
+))
+```
+
+* Displays **image and remove button** for each bottle in the cart.
+* Uses `handleRemoveFromCart` to remove items from **UI state** and **localStorage**.
+* `key={bottle.id}` ensures React can efficiently update list.
+
+**Real-life analogy:** Trolley showing all bottles you currently picked, with option to remove them.
+
+---
+
+## **4️⃣ `Bottle.jsx` (Single Bottle Component)**
+
+Purpose: Display **individual bottle information** and allow **adding to cart**.
+
+```jsx
+<button onClick={() => handleAddToCart(bottle)}>Buy Now</button>
+```
+
+* Shows **image, name, price, stock**.
+* Uses `handleAddToCart` to add the bottle to **cart state** and **localStorage**.
+
+**Real-life analogy:** Each bottle in the shop has a “Buy Now” button. Clicking it puts it in your trolley and notes it in your cupboard.
+
+---
+
+## **5️⃣ Flow Summary: How Everything Works Together**
+
+1. **Bottles Data** → `Bottles.jsx` receives from `bottlesPromise`.
+2. **Load Stored Cart** → `Bottles.jsx` reads IDs from localStorage and rebuilds cart state.
+3. **Render Bottles** → Each bottle displayed using `<Bottle />`.
+4. **Render Cart** → Cart displayed using `<Cart />`.
+5. **Add to Cart** → Button in `<Bottle />` triggers `handleAddToCart`:
+
+   * Updates React state (`cart`)
+   * Updates localStorage (persistent storage)
+6. **Remove from Cart** → Button in `<Cart />` triggers `handleRemoveFromCart`:
+
+   * Updates React state (`cart`)
+   * Updates localStorage (removes the ID)
+7. **Persistent Cart** → Refresh page → localStorage rebuilds cart automatically.
+
+---
+
+## **6️⃣ Example of Local Storage Cart**
+
+| Action            | localStorage (`cart`) | UI (`cart` state)           |
+| ----------------- | --------------------- | --------------------------- |
+| Page load         | `[]`                  | empty                       |
+| Add bottle 101    | `["101"]`             | shows bottle 101            |
+| Add bottle 102    | `["101","102"]`       | shows bottles 101, 102      |
+| Remove bottle 101 | `["102"]`             | shows bottle 102            |
+| Refresh page      | `["102"]`             | shows bottle 102 (restored) |
+
+---
+
+## **7️⃣ What We Are Mainly Doing**
+
+1. **Managing cart state** in React (`cart` state).
+2. **Persisting cart** in browser storage (`localStorage`) so it survives refreshes.
+3. **Syncing UI and storage** every time a bottle is added or removed.
+4. **Rendering bottles and cart items** in separate components for modularity.
+5. **Keeping storage efficient** by storing only IDs and not full objects.
+
+
+
+
+
+###
+| localStorage Key | Value (as stored in browser) | Explanation                                |
+| ---------------- | ---------------------------- | ------------------------------------------ |
+| cart             | `[]`                         | Empty cart initially                       |
+| cart             | `["101"]`                    | Added Cola (ID 101)                        |
+| cart             | `["101","102"]`              | Added Orange Juice (ID 102)                |
+| cart             | `["101","102","103"]`        | Added Apple Juice (ID 103)                 |
+| cart             | `["102","103"]`              | Removed Cola (ID 101)                      |
+| cart             | `["103","101"]`              | Added Cola again after removing some items |
+| cart             | `[]`                         | Cart emptied (all items removed)           |
+
+
+
+
+
+
+
+
+
+
+
+
+###
+// 1️⃣ Define object
+const user = {
+    id: 1,
+    name: "Muhiuddin",
+    email: "muhiuddin@example.com",
+    isLoggedIn: true
+};
+
+// 2️⃣ Save object to localStorage
+localStorage.setItem("user", JSON.stringify(user));
+
+// 3️⃣ Retrieve object from localStorage
+const storedUserString = localStorage.getItem("user");
+
+if (storedUserString) {
+    const storedUser = JSON.parse(storedUserString);
+    console.log("Stored user:", storedUser);
+} else {
+    console.log("No user found in localStorage");
+}

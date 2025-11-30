@@ -1,0 +1,261 @@
+import { StrictMode, Suspense } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+import { createBrowserRouter, RouterProvider } from 'react-router'
+import Root from './components/Root/Root.jsx'
+import Home from './components/Home/Home.jsx'
+import Mobiles from './components/Mobiles/Mobiles.jsx'
+import Laptops from './components/Laptops/Laptops.jsx'
+import Users from './components/Users/Users.jsx'
+import Users2 from './components/Users2/Users2.jsx'
+import UserDetails from './components/UserDetails/UserDetails.jsx'
+import Posts from './components/Posts/Posts.jsx'
+import PostDetail from './components/PostDetail/PostDetail.jsx'
+
+const usersPromise = fetch('https://jsonplaceholder.typicode.com/users').then(res => res.json());
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    Component: Root,
+    children: [
+      { index: true, Component: Home },
+      { path: 'mobiles', Component: Mobiles },
+      { path: 'laptops', Component: Laptops },
+      {
+        path: 'users',
+        loader: () => fetch('https://jsonplaceholder.typicode.com/users'),
+        Component: Users
+      },
+      {
+        path: 'users2',
+        element: <Suspense fallback={<span>Loading....</span>}>
+          <Users2 usersPromise={usersPromise}></Users2>
+        </Suspense>
+      },
+      {
+        path: 'users/:userId',
+        loader: ({ params }) => fetch(`https://jsonplaceholder.typicode.com/users/${params.userId}`),
+        Component: UserDetails
+      },
+    ]
+  },
+  {
+    path: '*',
+    element: <h3>Not  Found: 404 Status</h3>
+  }
+])
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <RouterProvider router={router}></RouterProvider>
+  </StrictMode>,
+)
+
+
+
+
+
+
+
+
+
+
+
+
+###
+# ✅ **1. Starting Point: The `User` Component**
+
+Your `User` component receives a single `user` object:
+
+```js
+const { id, name, email, phone } = user;
+```
+
+Example user:
+
+```js
+{ id: 3, name: "Clementine", email: "...", phone: "..." }
+```
+
+Inside the UI you have:
+
+```jsx
+<Link to={`/users/${id}`}>Show Details</Link>
+```
+
+If `id = 3`, this link becomes:
+
+```
+/users/3
+```
+
+---
+
+# 🚀 **2. What Happens When You Click “Show Details”?**
+
+### 👉 The URL changes to:
+
+```
+/users/3
+```
+
+### 👉 React Router tries to match this URL with your route definitions.
+
+You have this route:
+
+```js
+{
+  path: 'users/:userId',
+  loader: ({ params }) =>
+    fetch(`https://jsonplaceholder.typicode.com/users/${params.userId}`),
+  Component: UserDetails
+}
+```
+
+The path `users/:userId` matches the URL `/users/3`.
+
+---
+
+# 🎯 **3. How `params` is generated**
+
+Because your URL is:
+
+```
+/users/3
+```
+
+React Router extracts the dynamic part:
+
+```
+:userId → 3
+```
+
+So React Router builds this object:
+
+```js
+params = { userId: "3" }
+```
+
+### This `params` object is passed into the loader:
+
+```js
+loader: ({ params }) => {
+    console.log(params);   // { userId: "3" }
+}
+```
+
+---
+
+# 🔁 **4. What the Loader Does**
+
+Your loader fetches the details of that user:
+
+```js
+fetch(`https://jsonplaceholder.typicode.com/users/${params.userId}`)
+```
+
+So if `params.userId = 3`, then:
+
+```
+https://jsonplaceholder.typicode.com/users/3
+```
+
+Loader returns user data, and React Router gives it to `UserDetails`.
+
+---
+
+# 🧩 **5. How UserDetails2 and Suspense Fit Into This**
+
+Inside your `User` component (user card), you have a second way to view details:
+
+```jsx
+{
+  showInfo && 
+  <Suspense fallback={<span>Loading...</span>}>
+      <UserDetails2 userPromise={userPromise} />
+  </Suspense>
+}
+```
+
+This is **NOT** using params or route loader.
+This is **component-level data fetching using Suspense**.
+
+When you click "Show Info":
+
+1. A new promise fetches the data:
+
+   ```js
+   const userPromise = fetch(`/users/${id}`).then(res => res.json());
+   ```
+
+2. That promise is passed to `UserDetails2`.
+
+Both methods give user details, but:
+
+| Method              | How It Works                                 | Uses Params? |
+| ------------------- | -------------------------------------------- | ------------ |
+| **Route Method**    | Clicking link → URL changes → loader fetches | ✔ Yes        |
+| **Suspense Method** | Button inside card → Suspense fetches        | ❌ No        |
+
+---
+
+# 🌳 **6. Visual Diagram (Super Simple)**
+
+```
+User Component
+ ├── Shows basic user info
+ ├── Link → /users/3  ------> React Router Route
+ │                             /users/:userId
+ │                               params = { userId: "3" }
+ │                               loader fetches user 3
+ │                               UserDetails renders user 3
+ │
+ └── Show Info Button ------> Suspense
+                               userPromise fetches user 3
+                               UserDetails2 renders user 3
+```
+
+---
+
+# 🧠 **7. Final Summary (Easy Overview)**
+
+### ✔ From the User card:
+
+`<Link to={`/users/${id}`}>`
+changes the URL → triggers React Router’s dynamic route.
+
+### ✔ React Router sees:
+
+`/users/3`
+matches `users/:userId`
+
+### ✔ React Router gives:
+
+```js
+params = { userId: "3" }
+```
+
+### ✔ Loader fetches data for that user
+
+and passes it into `UserDetails`.
+
+### ✔ Independently:
+
+`Show Info` button also loads the same user,
+but **client-side**, without changing the URL.
+
+---
+
+
+
+
+
+
+
+
+
+
+Yes — React Suspense only works when a component throws a Promise.
+That Promise tells React: “Hold on, this component is not ready yet; show the fallback until I resolve.”

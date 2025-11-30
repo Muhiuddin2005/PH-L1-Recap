@@ -1,0 +1,85 @@
+# ✅ 1. What is the `<form>` tag in React?
+
+In React, the `<form>` tag is the same HTML `<form>` element, but React often manages form data using **state** and **event handlers** (e.g., `onSubmit`, `onChange`).
+
+You write it like normal HTML:
+
+```jsx
+<form onSubmit={handleSubmit}>
+  <input type="text" />
+  <button type="submit">Submit</button>
+</form>
+```
+
+React does **not** replace the `<form>` tag—it just adds better ways to control form data.
+
+---
+
+# ✅ 2. `<form>` Tag Attributes (Beginner-Friendly Table)
+
+| Attribute        | Meaning (Simple Explanation)                             | Example                          |
+| ---------------- | -------------------------------------------------------- | -------------------------------- |
+| **onSubmit**     | Function runs when the user submits the form             | `<form onSubmit={handleSubmit}>` |
+| **action**       | URL where form data is sent (not used much in React)     | `<form action="/login">`         |
+| **method**       | HTTP method: GET or POST                                 | `<form method="POST">`           |
+| **autoComplete** | Enables/Disables autocomplete suggestions                | `<form autoComplete="off">`      |
+| **name**         | Gives the form a name                                    | `<form name="signupForm">`       |
+| **target**       | Where to display the server response (`_self`, `_blank`) | `<form target="_blank">`         |
+| **noValidate**   | Disables browser validation                              | `<form noValidate>`              |
+
+👉 **React mainly uses:** `onSubmit`.
+
+---
+
+# ✅ 3. What is the `<input>` tag in React?
+
+`<input>` in React is also the same as normal HTML, but React often uses **state** to track the value.
+
+Example:
+
+```jsx
+<input 
+  type="text"
+  value={username}
+  onChange={(e) => setUsername(e.target.value)}
+/>
+```
+
+This is called a **controlled input**.
+
+---
+
+# ✅ 4. `<input>` Tag Attributes (Beginner-Friendly Table)
+
+| Attribute        | Meaning (Simple Explanation)                      | Example                                  |
+| ---------------- | ------------------------------------------------- | ---------------------------------------- |
+| **type**         | Type of input (`text`, `email`, `password`, etc.) | `<input type="text">`                    |
+| **value**        | Sets the current value (controlled by React)      | `<input value={name}>`                   |
+| **defaultValue** | Initial value (uncontrolled input)                | `<input defaultValue="hi">`              |
+| **onChange**     | Runs when the user types something                | `<input onChange={handleChange}>`        |
+| **placeholder**  | Light text shown before typing                    | `<input placeholder="Enter name">`       |
+| **name**         | Name of input (useful for forms)                  | `<input name="email">`                   |
+| **id**           | Unique ID used for labels                         | `<input id="username">`                  |
+| **required**     | Input must be filled                              | `<input required>`                       |
+| **readOnly**     | User cannot modify                                | `<input readOnly>`                       |
+| **disabled**     | Input cannot be clicked or typed                  | `<input disabled>`                       |
+| **maxLength**    | Maximum characters allowed                        | `<input maxLength="20">`                 |
+| **min / max**    | For number/date inputs                            | `<input type="number" min="1" max="10">` |
+| **pattern**      | Regex pattern to validate input                   | `<input pattern="[A-Za-z]{3}">`          |
+| **autoComplete** | Suggest previous inputs                           | `<input autoComplete="off">`             |
+
+
+
+
+
+
+
+
+
+| Term                   | Meaning (Beginner-Friendly)                    |
+| ---------------------- | ---------------------------------------------- |
+| **e**                  | Event object (information about what happened) |
+| **e.preventDefault()** | Stops form from refreshing page                |
+| **e.target**           | The HTML element that caused the event         |
+| **e.target.name**      | The input’s name (e.g., `"email"`)             |
+| **e.target.value**     | The user’s typed text (e.g., `"hello"`)        |

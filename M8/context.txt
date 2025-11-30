@@ -1,0 +1,209 @@
+# ✅ **Part 1 — What is React Context?**
+
+* React Context allows **sharing data globally** between components without manually passing props through every level.
+* Useful when **many components need the same data**, e.g., user info, theme, settings, or money/assets in your example.
+* Steps to use Context:
+
+### **1. Create a Context**
+
+```js
+import { createContext } from 'react';
+export const MoneyContext = createContext(0); // 0 is default value
+export const AssetContext = createContext(''); // '' is default asset
+```
+
+### **2. Wrap parent component with Provider**
+
+```js
+<MoneyContext.Provider value={[money, setMoney]}>
+   <ChildComponent />
+</MoneyContext.Provider>
+```
+
+### **3. Use the Context in child**
+
+```js
+import { useContext } from 'react';
+import { MoneyContext } from './FamilyTree';
+
+const Child = () => {
+    const [money, setMoney] = useContext(MoneyContext);
+    return <p>{money}</p>;
+};
+```
+
+---
+
+# ✅ **Part 2 — Explain the Implementation in Your Code**
+
+---
+
+## **FamilyTree.jsx**
+
+```jsx
+import React, { createContext, useState } from 'react';
+import Grandpa from './Grandpa';
+import './FamilyTree.css'
+
+// 1️⃣ Create contexts for money and assets
+export const AssetContext = createContext(''); // default asset = ''
+export const MoneyContext = createContext(0);  // default money = 0
+
+const FamilyTree = () => {
+    const [money, setMoney] = useState(0); // state for money
+
+    const asset = 'diamond';  // asset passed via props
+    const newAsset = 'gold';  // asset passed via context
+
+    return (
+        <div className='family-tree'>
+            <h2>Family Tree</h2>
+            <h4>Total Family Money: {money}</h4>
+
+            {/* 2️⃣ Provide money globally via context */}
+            <MoneyContext.Provider value={[money, setMoney]}>
+                
+                {/* 3️⃣ Provide asset globally via context */}
+                <AssetContext.Provider value={newAsset}>
+
+                    {/* 4️⃣ Passing asset via props (prop drilling) */}
+                    <Grandpa asset={asset}></Grandpa>
+
+                </AssetContext.Provider>
+            </MoneyContext.Provider>
+        </div>
+    );
+};
+
+export default FamilyTree;
+```
+
+**Key Points:**
+
+* `money` is **global state** accessed via `MoneyContext`
+* `newAsset` is **global value** accessed via `AssetContext`
+* `asset` is sent via **props** → **prop drilling**
+
+---
+
+## **Special.jsx (Child using Context)**
+
+```jsx
+import React, { useContext } from 'react';
+import { AssetContext } from './FamilyTree';
+
+const Special = ({ name, asset }) => {
+    // Using context to access newAsset globally
+    const newAsset = useContext(AssetContext);
+
+    console.log('new asset', newAsset)
+
+    return (
+        <div>
+            <h3>Special: {name}</h3>
+            <p>Asset (via prop): {asset}</p>
+            <p>New Asset (via context): {newAsset}</p>
+        </div>
+    );
+};
+
+export default Special;
+```
+
+**Explanation:**
+
+* `asset` → comes via prop (**prop drilling**)
+* `newAsset` → comes via context (**global, no need to pass manually**)
+
+---
+
+## **Aunt.jsx (Child using Context for money)**
+
+```jsx
+import React, { useContext } from 'react'; // ✅ Must use useContext
+import Cousin from './Cousin';
+import { MoneyContext } from './FamilyTree';
+
+const Aunt = ({ asset }) => {
+
+    // Using context to access money state globally
+    const [money, setMoney] = useContext(MoneyContext);
+
+    const handleAddMoney = () => {
+        setMoney(money + 5000); // Update global money
+    };
+
+    return (
+        <div>
+            <h3>Aunt</h3>
+            <section className='flex'>
+                {/* asset via prop (prop drilling) */}
+                <Cousin asset={asset} name="Tom Tom" />
+                <Cousin name="Jo Jooo" />
+                <button onClick={handleAddMoney}>Add 5000 tk</button>
+            </section>
+        </div>
+    );
+};
+
+export default Aunt;
+```
+
+**Explanation:**
+
+* `money` comes from **context** → no need to pass through Grandpa or other intermediates
+* `asset` is **still prop drilled**
+
+---
+
+# ✅ **Part 3 — Prop Drilling vs Context (Inline Explanation)**
+
+**Prop Drilling:**
+
+* Data is sent **through every intermediate component** via props
+* Hard to maintain for deep component trees
+
+**Context:**
+
+* Data is **stored globally** using a Provider
+* Any child can access it directly using `useContext`
+* No need to pass through intermediate components
+
+**In this example:**
+
+* `asset` → prop drilling
+* `money` → context
+
+---
+
+# ✅ **Part 4 — Comparison Table**
+
+| Feature                     | Prop Drilling                               | Context API                                      |
+| --------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| **Data flow**               | Parent → Child manually                     | Global, accessible anywhere in tree              |
+| **Intermediate components** | Must pass props even if unused              | No need to pass props through them               |
+| **Best for**                | Small trees                                 | Large/deep trees or global data                  |
+| **Ease of maintenance**     | Harder                                      | Easier                                           |
+| **State updates**           | Must pass new props manually                | Updates automatically reflected in all consumers |
+| **Flexibility**             | Low                                         | High                                             |
+| **Example from code**       | `asset` prop passed Grandpa → Aunt → Cousin | `money` state accessed by Aunt via context       |
+
+---
+
+# ✅ **Part 5 — Key Takeaways for Beginners**
+
+1. **React Context** = global data store for component tree
+2. **Prop Drilling** = manual prop passing through every level
+3. Use **prop drilling** for **small/simple apps**
+4. Use **context** for **large apps or deeply nested components**
+5. You can **mix both**: props for unique data, context for shared/global data
+
+
+
+| Concept                     | Your Code Example          | Notes                               |
+| --------------------------- | -------------------------- | ----------------------------------- |
+| Create context              | `createContext('')`        | Default value if no Provider exists |
+| Provider                    | `<AssetContext.Provider>`  | Wraps children that need access     |
+| Value prop of Provider      | `value={newAsset}`         | The global data to share            |
+| Consume context             | `useContext(AssetContext)` | Access the shared data              |
+| Prop drilling (alternative) | `<Grandpa asset={asset}>`  | Manual passing of props             |

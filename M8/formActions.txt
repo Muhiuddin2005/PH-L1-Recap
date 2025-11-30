@@ -1,0 +1,400 @@
+import React from 'react';
+
+// This component handles a form and prints the entered data in the console
+const FormAction = () => {
+
+    // This function will run when the form is submitted
+    // "formData" automatically contains all the input values from the form
+    const handleFormAction = (formData) =>{
+        // formData.get('name') gets the value of the input whose name="name"
+        console.log(formData.get('name'));
+
+        // formData.get('email') gets the value of the input whose name="email"
+        console.log(formData.get('email'));
+    }
+
+    return (
+        <div>
+            {/* 
+                In React (Next.js App Router style), 
+                using action={handleFormAction} means:
+                "When the form is submitted, call handleFormAction and give it the form data"
+            */}
+            <form action={handleFormAction}>
+
+                {/* Text input for name. Its value will be saved under key 'name' */}
+                <input 
+                    type="text" 
+                    name='name'       // important: name attribute is the key for formData.get()
+                    placeholder='Name' 
+                />
+                <br />
+
+                {/* Email input. Value saved under key 'email' */}
+                <input 
+                    type="email" 
+                    name='email'      // formData.get('email') will read this input's value
+                    placeholder='Email' 
+                />
+                <br />
+
+                {/* 
+                    Submit button. 
+                    When clicked, the form collects all data and calls handleFormAction(formData)
+                */}
+                <input 
+                    type="submit" 
+                    value="Submit" 
+                />
+            </form>
+        </div>
+    );
+};
+
+export default FormAction;
+
+
+
+
+
+
+
+
+
+
+import React, { useState } from 'react';
+
+const ControlledField = () => {
+    // These are "state variables"
+    // They store the values typed into the inputs
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    // This state stores any error message we want to show
+    const [error, setError] = useState('');
+
+    // This function runs when the form is submitted
+    const handleSubmit = (e) => {
+        e.preventDefault();         // prevents page refresh
+        console.log(name, email, password);
+
+        // Check password length
+        if (password.length < 6) {
+            setError('6 characters or longer password needed.');
+        } 
+        else {
+            setError('');
+        }
+    };
+
+    // Runs every time NAME input changes
+    // e.target.value = whatever you type into the input
+    const handleNameChange = (e) => {
+        setName(e.target.value);    // update the name state
+    };
+
+    // Runs every time EMAIL input changes
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+
+    // Runs every time PASSWORD input changes
+    const handlePasswordOnChange = (e) => {
+        console.log(e.target.value);     // shows typed password on console
+        setPassword(e.target.value);
+
+        // Live validation while typing
+        if (e.target.value.length < 6) {
+            setError('Password must be 6 characters or longer.');
+        } 
+        else {
+            setError('');
+        }
+    };
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                
+                {/* 
+                    Controlled input: value comes from state (name)
+                    onChange updates the state whenever user types
+                */}
+                <input 
+                    type="text" 
+                    onChange={handleNameChange} 
+                    defaultValue={name} 
+                    placeholder="Name" 
+                />
+                <br />
+
+                {/* Email controlled field */}
+                <input 
+                    type="email" 
+                    onChange={handleEmailChange} 
+                    defaultValue={email} 
+                    name="email" 
+                    placeholder="Email" 
+                    required 
+                />
+                <br />
+
+                {/* Password controlled field */}
+                <input 
+                    type="password" 
+                    name="password" 
+                    placeholder="Password" 
+                    onChange={handlePasswordOnChange} 
+                    defaultValue={password} 
+                    required 
+                />
+                <br />
+
+                {/* Submit button */}
+                <input type="submit" value="Submit" />
+            </form>
+
+            {/* Error message display */}
+            <p style={{ color: 'red' }}>
+                <small>{error}</small>
+            </p>
+        </div>
+    );
+};
+
+export default ControlledField;
+
+
+
+
+
+✅ What is a controlled field?
+
+A controlled field is an input whose value is stored in React state.
+
+Example:
+
+You type "Muhiuddin" → state name becomes "Muhiuddin"
+
+The input shows the value that is in state
+
+React is “controlling” the input → controlled field
+
+
+
+
+
+
+
+import React, { useRef } from 'react';
+
+const UnControlledField = () => {
+
+    // useRef creates a "reference" to an element
+    // It does NOT cause re-renders like useState
+    const emailRef = useRef('');
+    const passwordRef = useRef('');
+
+    // This runs when the form is submitted
+    const handleSubmit = (e) => {
+        e.preventDefault();  // stop page refresh
+
+        // emailRef.current = the <input> element itself
+        // emailRef.current.value = the text typed in the input
+        console.log(emailRef.current.value);
+
+        const email = emailRef.current.value;       // read email input directly
+        const password = passwordRef.current.value; // read password input directly
+
+        console.log(email, password);               // show input values
+    };
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+
+                {/* 
+                    Uncontrolled input:
+                    Instead of storing the value in React state,
+                    we directly read the value from the real DOM input using a ref.
+                */}
+                <input 
+                    ref={emailRef}        // attaches this input to emailRef
+                    type="email" 
+                />
+                <br />
+
+                <input 
+                    ref={passwordRef}     // attaches this input to passwordRef
+                    type="password" 
+                />
+                <br />
+
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    );
+};
+
+export default UnControlledField;
+
+
+
+
+
+
+
+
+
+
+
+✔ What is an uncontrolled field?
+
+An uncontrolled field is an input whose value is NOT stored in React state.
+
+Instead of:
+
+useState
+
+onChange
+
+re-rendering
+
+You just read the value directly from the DOM using useRef().
+
+
+
+
+
+
+
+
+
+
+
+
+import React from 'react';
+
+const SimpleForm = () => {
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(e.target.name.value);
+        console.log(e.target.email.value);
+
+    }
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                <input type="text" name='name' placeholder='Your Name' />
+                <br />
+                <input type="email" name='email' placeholder='Your Email' />
+                <br />
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    );
+};
+
+export default SimpleForm;
+
+
+
+
+
+
+
+
+
+ * 3. handle all controlled field on one state object 
+ *  const [formData, setFormData] = useState({
+ *  name: '',
+ *  password: '',
+ *  phone: '',
+ *  })
+
+
+
+
+import React, { useState } from "react";
+
+const ControlledFormOneState = () => {
+
+  // One state object containing all fields
+  const [formData, setFormData] = useState({
+    name: "",
+    password: "",
+    phone: ""
+  });
+
+  // One function to handle all input changes
+  const handleChange = (e) => {
+    const fieldName = e.target.name;   // get input name (name/password/phone)
+    const fieldValue = e.target.value; // get typed value
+
+    // Update only the specific field
+    setFormData({
+      ...formData,            // keep previous values
+      [fieldName]: fieldValue // update field dynamically
+    });
+  };
+
+  // Form submit handler
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);    // prints {name:"",password:"",phone:""}
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+
+        <input
+          type="text"
+          name="name"                 // must match object key
+          placeholder="Name"
+          value={formData.name}      // get value from state
+          onChange={handleChange}    // single handler
+        />
+        <br />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+        />
+        <br />
+
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone"
+          value={formData.phone}
+          onChange={handleChange}
+        />
+        <br />
+
+        <input type="submit" value="Submit" />
+      </form>
+
+      <pre>{JSON.stringify(formData, null, 2)}</pre> {/* for debugging */}
+    </div>
+  );
+};
+
+export default ControlledFormOneState;
+
+
+
+
+
+
+
+
+
+
+

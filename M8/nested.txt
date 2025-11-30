@@ -1,0 +1,28 @@
+✅ Updated Router with Multi-Tree Nested Children
+{
+  path: 'users/:userId',
+  loader: ({ params }) =>
+    fetch(`https://jsonplaceholder.typicode.com/users/${params.userId}`),
+  Component: UserDetails,
+
+  children: [
+    {
+      path: 'posts',
+      loader: ({ params }) =>
+        fetch(`https://jsonplaceholder.typicode.com/users/${params.userId}/posts`),
+      Component: UserPosts
+    },
+    {
+      path: 'posts/:postId',
+      loader: ({ params }) =>
+        fetch(`https://jsonplaceholder.typicode.com/posts/${params.postId}`),
+      Component: SinglePost
+    },
+    {
+      path: 'albums',
+      loader: ({ params }) =>
+        fetch(`https://jsonplaceholder.typicode.com/users/${params.userId}/albums`),
+      Component: UserAlbums
+    }
+  ]
+}
