@@ -1,0 +1,51 @@
+const handleRegister = (event) => {
+    event.preventDefault();
+
+    const name = event.target.name.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+
+    // get checkbox value
+    const accepted = event.target.terms.checked;
+
+    setError("");
+    setSuccess("");
+
+    if (!accepted) {
+        setError("You must accept the Terms & Conditions.");
+        return;
+    }
+
+    // now continue for email/password validation...
+    console.log(name, email, password, accepted);
+};
+
+
+
+
+<div className="flex items-center gap-2 mt-2">
+    <input type="checkbox" name="terms" id="terms" className="checkbox" />
+    <label htmlFor="terms" className="label-text">
+        Accept Terms & Conditions
+    </label>
+</div>
+
+
+
+
+<label htmlFor="terms">
+links to this:
+
+jsx
+Copy code
+<input type="checkbox" id="terms" />
+So when the user clicks the text “Accept Terms & Conditions”, the checkbox automatically toggles (checked/unchecked).
+
+👍 Better for User Experience
+Easier to click
+
+Larger clickable area
+
+Accessible for screen readers
+
+Required for good UX

@@ -1,0 +1,123 @@
+# ✅ What does `createUserWithEmailAndPassword(auth, email, password)` return?
+
+When a user registers, Firebase returns a **UserCredential object**, just like Google login.
+
+### ✔ The returned object structure:
+
+```js
+{
+  user: { ...user info... },
+  providerId: null,
+  _tokenResponse: { ... },
+  operationType: "signIn"
+}
+```
+
+---
+
+# 🎯 The important part is:
+
+## ✅ `result.user`
+
+This contains the **newly registered user's information**.
+
+---
+
+# 🔥 **What info can you get from `result.user` during Email/Password registration?**
+
+Here is the complete list (for email-password accounts):
+
+---
+
+## ✔ **Basic User Info**
+
+| Property             | Description                                               |
+| -------------------- | --------------------------------------------------------- |
+| `user.uid`           | Unique Firebase user ID                                   |
+| `user.email`         | User email                                                |
+| `user.displayName`   | Always **null** for email/password (unless updated later) |
+| `user.photoURL`      | Always **null**                                           |
+| `user.phoneNumber`   | null                                                      |
+| `user.providerId`    | `"firebase"`                                              |
+| `user.emailVerified` | `false` at creation                                       |
+
+---
+
+## ✔ **Account Metadata**
+
+| Property                       | Meaning                           |
+| ------------------------------ | --------------------------------- |
+| `user.metadata.creationTime`   | When the user account was created |
+| `user.metadata.lastSignInTime` | Last login timestamp              |
+
+---
+
+## ✔ **Provider Data**
+
+From:
+
+```js
+user.providerData[0]
+```
+
+Contains:
+
+| Property      | Value (for email/password) |
+| ------------- | -------------------------- |
+| `providerId`  | `"password"`               |
+| `email`       | same email                 |
+| `uid`         | Firebase UID               |
+| `displayName` | null                       |
+| `photoURL`    | null                       |
+
+---
+
+# 📌 Important: Why name input is not saving?
+
+You added:
+
+```html
+<input type="text" name="name" />
+```
+
+But Firebase **does NOT save the user name** automatically.
+
+To save the user name, you must call:
+
+```js
+import { updateProfile } from "firebase/auth";
+
+updateProfile(auth.currentUser, {
+    displayName: name
+});
+```
+
+Otherwise `displayName` will always be **null**.
+
+---
+
+# ⭐ Final Summary
+
+### When using **Email + Password Registration**:
+
+### `result` = Full Firebase authentication response
+
+### `result.user` = Firebase User object containing:
+
+```
+uid
+email
+displayName (null)
+photoURL (null)
+emailVerified
+providerId
+
+metadata.creationTime
+metadata.lastSignInTime
+
+providerData[0].providerId
+providerData[0].email
+providerData[0].uid
+```
+
+

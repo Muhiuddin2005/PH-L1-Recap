@@ -1,0 +1,99 @@
+# ✅ **Steps**
+
+1. Import `updateProfile` from Firebase Auth.
+2. Collect **name** and **photo URL** from form inputs.
+3. After `createUserWithEmailAndPassword`, call `updateProfile` on the new user.
+4. Optionally, send **email verification**.
+
+---
+
+# ✅ **Full Example: Register Component**
+
+```jsx
+import React, { useState } from "react";
+import { auth } from "../../firebase/firebase.init";
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
+
+const Register = () => {
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+
+    const handleRegister = (event) => {
+        event.preventDefault();
+        setError("");
+        setSuccess("");
+
+        const name = event.target.name.value;
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+        const photoURL = event.target.photo.value; // new input for photo URL
+
+        // 🔹 Basic validation
+        if (!name || !email || !password) {
+            setError("Please fill all fields");
+            return;
+        }
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(result => {
+                const user = result.user;
+
+                // 🔹 Update displayName and photoURL
+                updateProfile(user, {
+                    displayName: name,
+                    photoURL: photoURL || null, // optional
+                })
+                .then(() => {
+                    setSuccess("Account created successfully! Name & photo updated.");
+                })
+                .catch(err => setError(err.message));
+
+                // 🔹 Send email verification
+                sendEmailVerification(user)
+                    .then(() => {
+                        setSuccess(prev => prev + " Verification email sent! Check inbox.");
+                    });
+
+                // 🔹 Reset form
+                event.target.reset();
+            })
+            .catch(err => setError(err.message));
+    };
+
+    return (
+        <div className="card bg-base-100 w-full mx-auto max-w-sm shrink-0 shadow-2xl">
+            <div className="card-body">
+                <h1 className="text-3xl font-bold">Register Account</h1>
+
+                {error && <p className="text-red-500">{error}</p>}
+                {success && <p className="text-green-600">{success}</p>}
+
+                <form onSubmit={handleRegister}>
+                    {/* Name */}
+                    <label className="label">Name</label>
+                    <input type="text" name="name" className="input" placeholder="Your Name" />
+
+                    {/* Photo URL */}
+                    <label className="label">Photo URL</label>
+                    <input type="text" name="photo" className="input" placeholder="Photo URL (optional)" />
+
+                    {/* Email */}
+                    <label className="label">Email</label>
+                    <input type="email" name="email" className="input" placeholder="Email" />
+
+                    {/* Password */}
+                    <label className="label">Password</label>
+                    <input type="password" name="password" className="input" placeholder="Password" />
+
+                    <button className="btn btn-neutral mt-4">Register</button>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+export default Register;
+```
+
+---
+

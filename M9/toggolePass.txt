@@ -1,0 +1,20 @@
+const [showPassword, setShowPassword] = useState(false);
+
+<label className="label">Password</label>
+
+                        <div className="relative w-full">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                className="input w-full pr-10"
+                                placeholder="Password"
+                            />
+
+                            {/* 👁️ Eye Icon */}
+                            <span
+                                className="absolute right-3 top-3 cursor-pointer text-xl"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
